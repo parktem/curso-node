@@ -30,14 +30,6 @@ let getEmpleado = (id) => {
     });
 }
 
-getEmpleado(2).then( empleado => {
-    console.log(empleado);
-    return getSalario(empleado);
-}).then( resp => {
-    console.log('El salario de ' + resp.nombre + ' es de ' + resp.salario);
-})
-
-
 let getSalario = (empleado) => {
     return new Promise( (resolve, reject) => {
         let salarioDB = salarios.find(salario => salario.id === empleado.id);
@@ -54,8 +46,10 @@ let getSalario = (empleado) => {
     })
 }
 
-getSalario(empleados[2]).then( salario => {
-    console.log(salario);
-}, err => {
-    console.log('No existe salario para esta persona');
-})
+getInformacion = async (id) => {
+    let empleado = await getEmpleado(id);
+    let resp = await getSalario(empleado);
+    return resp.nombre + " tiene un salario de " + resp.salario;
+}
+
+getInformacion(3).then(resp => console.log(resp), err => console.log('No se encuentra la información'));
